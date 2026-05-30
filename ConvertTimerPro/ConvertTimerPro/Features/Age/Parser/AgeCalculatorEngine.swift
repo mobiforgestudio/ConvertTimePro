@@ -8,77 +8,110 @@
 import Foundation
 
 final class AgeCalculatorEngine {
-    
+
     func calculate(
         birthDate: Date
     ) -> AgeResult {
-        
-        let now = Date()
-        
+
         let calendar =
-        Calendar.current
-        
+            Calendar.current
+
+        let now =
+            Date()
+
+        let today =
+            calendar.startOfDay(
+                for: now
+            )
+
+        let normalizedBirthDate =
+            calendar.startOfDay(
+                for: birthDate
+            )
+
         let ageComponents =
-        calendar.dateComponents(
-            [
-                .year,
-                .month,
-                .day
-            ],
-            from: birthDate,
-            to: now
-        )
-        
+            calendar.dateComponents(
+                [
+                    .year,
+                    .month,
+                    .day
+                ],
+                from: normalizedBirthDate,
+                to: today
+            )
+
         let totalDays =
-        calendar.dateComponents(
-            [.day],
-            from: birthDate,
-            to: now
-        ).day ?? 0
-        
-        var nextBirthday =
-        calendar.date(
-            bySetting: .year,
-            value: calendar.component(
+            calendar.dateComponents(
+                [.day],
+                from: normalizedBirthDate,
+                to: today
+            ).day ?? 0
+
+        let birthMonth =
+            calendar.component(
+                .month,
+                from: normalizedBirthDate
+            )
+
+        let birthDay =
+            calendar.component(
+                .day,
+                from: normalizedBirthDate
+            )
+
+        let currentYear =
+            calendar.component(
                 .year,
-                from: now
-            ),
-            of: birthDate
-        ) ?? now
-        
-        if nextBirthday < now {
-            
-            nextBirthday =
+                from: today
+            )
+
+        var nextBirthdayComponents =
+            DateComponents()
+
+        nextBirthdayComponents.year =
+            currentYear
+
+        nextBirthdayComponents.month =
+            birthMonth
+
+        nextBirthdayComponents.day =
+            birthDay
+
+        var nextBirthday =
             calendar.date(
-                byAdding: .year,
-                value: 1,
-                to: nextBirthday
-            ) ?? nextBirthday
+                from: nextBirthdayComponents
+            ) ?? today
+
+        nextBirthday =
+            calendar.startOfDay(
+                for: nextBirthday
+            )
+
+        if nextBirthday < today {
+
+            nextBirthday =
+                calendar.date(
+                    byAdding: .year,
+                    value: 1,
+                    to: nextBirthday
+                ) ?? nextBirthday
         }
-        
-        let daysUntilBirthday =
-        calendar.dateComponents(
-            [.day],
-            from: now,
-            to: nextBirthday
-        ).day ?? 0
-        
-        
+
+        let daysUntilNextBirthday =
+            calendar.dateComponents(
+                [.day],
+                from: today,
+                to: nextBirthday
+            ).day ?? 0
+
         return AgeResult(
-            years:
-                ageComponents.year ?? 0,
-            months:
-                ageComponents.month ?? 0,
-            days:
-                ageComponents.day ?? 0,
-            totalDays:
-                totalDays,
-            totalHours:
-                totalDays * 24,
-            totalMinutes:
-                totalDays * 24 * 60,
-            nextBirthdayDaysRemaining:
-                daysUntilBirthday
+            years: ageComponents.year ?? 0,
+            months: ageComponents.month ?? 0,
+            days: ageComponents.day ?? 0,
+            totalDays: totalDays,
+            totalHours: totalDays * 24,
+            totalMinutes: totalDays * 24 * 60,
+            nextBirthdayDaysRemaining: daysUntilNextBirthday
         )
     }
 }
