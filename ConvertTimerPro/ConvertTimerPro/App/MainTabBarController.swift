@@ -27,7 +27,7 @@ final class MainTabBarController: UITabBarController {
 
         switch tab {
         case .calculator:
-            rootViewController = AgeViewController()
+            rootViewController = DateDifferenceViewController()
         case .timestamp:
             rootViewController = TimestampViewController()
         case .countdown:
