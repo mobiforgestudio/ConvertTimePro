@@ -294,7 +294,7 @@ private extension AboutContentView {
             UILabel().then {
 
                 $0.text =
-                    "mobiforge.studio"
+                    "https://mobiforge-site.pages.dev"
 
                 $0.font =
                     AppFont.bodyMedium()

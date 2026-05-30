@@ -71,6 +71,12 @@ final class SettingsViewController:
             
             self?.showAbout()
         }
+        
+        contentView.contactView.onTap = {
+            [weak self] in
+            
+            self?.openContactSupport()
+        }
     }
 }
 
@@ -135,7 +141,7 @@ extension SettingsViewController {
         guard let url =
                 URL(
                     string:
-                        AppConstants.appStoreUrl
+                        AppConstants.privacyPolicyUrl
                 )
         else {
             return
@@ -144,6 +150,14 @@ extension SettingsViewController {
         UIApplication.shared.open(
             url
         )
+    }
+    
+    private func openContactSupport() {
+        if let url = URL(
+            string: AppConstants.mailTo
+        ) {
+            UIApplication.shared.open(url)
+        }
     }
     
     private func showAbout() {

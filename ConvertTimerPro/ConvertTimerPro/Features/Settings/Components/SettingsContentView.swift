@@ -21,6 +21,9 @@ final class SettingsContentView:
     let privacyView =
         SettingsItemView()
 
+    let contactView =
+        SettingsItemView()
+    
     let aboutView =
         SettingsItemView()
 
@@ -99,6 +102,10 @@ final class SettingsContentView:
         )
 
         stackView.addArrangedSubview(
+            contactView
+        )
+        
+        stackView.addArrangedSubview(
             aboutView
         )
 
@@ -121,6 +128,11 @@ final class SettingsContentView:
             title: "Privacy Policy"
         )
 
+        contactView.configure(
+            iconName: "envelope.fill",
+            title: "Contact Support"
+        )
+        
         aboutView.configure(
             iconName: "info.circle",
             title: "About"
@@ -144,6 +156,7 @@ final class SettingsContentView:
             rateView,
             shareView,
             privacyView,
+            contactView,
             aboutView
         ].forEach {
 

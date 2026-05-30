@@ -14,11 +14,53 @@ final class MainTabBarController:
 
         super.viewDidLoad()
 
+        setupAppearance()
+
         setupTabs()
     }
 }
 
 private extension MainTabBarController {
+
+    func setupAppearance() {
+
+        let appearance =
+            UITabBarAppearance()
+
+        appearance.configureWithOpaqueBackground()
+
+        appearance.backgroundColor =
+            AppColor.Background.primary
+
+        appearance.stackedLayoutAppearance
+            .selected.iconColor =
+            AppColor.Accent.primary
+
+        appearance.stackedLayoutAppearance
+            .selected.titleTextAttributes = [
+                .foregroundColor:
+                    AppColor.Accent.primary
+            ]
+
+        appearance.stackedLayoutAppearance
+            .normal.iconColor =
+            AppColor.Text.secondary
+
+        appearance.stackedLayoutAppearance
+            .normal.titleTextAttributes = [
+                .foregroundColor:
+                    AppColor.Text.secondary
+            ]
+
+        tabBar.standardAppearance =
+            appearance
+
+        if #available(iOS 15.0, *) {
+
+            tabBar.scrollEdgeAppearance =
+                appearance
+        }
+    }
 
     func setupTabs() {
 
@@ -32,9 +74,13 @@ private extension MainTabBarController {
             UITabBarItem(
                 title: "Home",
                 image: UIImage(
-                    systemName: "house"
+                    systemName:
+                        "house"
                 ),
-                tag: 0
+                selectedImage: UIImage(
+                    systemName:
+                        "house.fill"
+                )
             )
 
         let tools =
@@ -50,7 +96,10 @@ private extension MainTabBarController {
                     systemName:
                         "square.grid.2x2"
                 ),
-                tag: 1
+                selectedImage: UIImage(
+                    systemName:
+                        "square.grid.2x2.fill"
+                )
             )
 
         let settings =
@@ -63,13 +112,16 @@ private extension MainTabBarController {
             UITabBarItem(
                 title: "Settings",
                 image: UIImage(
-                    systemName: "gear"
+                    systemName:
+                        "gearshape"
                 ),
-                tag: 2
+                selectedImage: UIImage(
+                    systemName:
+                        "gearshape.fill"
+                )
             )
 
         viewControllers = [
-
             home,
             tools,
             settings
