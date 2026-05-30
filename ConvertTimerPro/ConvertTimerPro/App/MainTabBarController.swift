@@ -7,65 +7,72 @@
 
 import UIKit
 
-final class MainTabBarController: UITabBarController {
+final class MainTabBarController:
+    UITabBarController {
 
     override func viewDidLoad() {
+
         super.viewDidLoad()
 
-        setupAppearance()
         setupTabs()
     }
+}
 
-    private func setupTabs() {
-        viewControllers = AppTab.allCases.map { tab in
-            createTab(for: tab)
-        }
-    }
+private extension MainTabBarController {
 
-    private func createTab(for tab: AppTab) -> UIViewController {
-        let rootViewController: UIViewController
+    func setupTabs() {
 
-        switch tab {
-        case .calculator:
-            rootViewController = DateDifferenceViewController()
-        case .timestamp:
-            rootViewController = TimestampViewController()
-        case .countdown:
-            rootViewController = CountdownViewController()
-        case .workingDays:
-            rootViewController = WorkdaysViewController()
-        case .timezone:
-            rootViewController = TimezoneViewController()
-        }
+        let home =
+            UINavigationController(
+                rootViewController:
+                    HomeViewController()
+            )
 
-        let navigationController = UINavigationController(rootViewController: rootViewController)
-        navigationController.tabBarItem = UITabBarItem(
-            title: tab.title,
-            image: UIImage(systemName: tab.iconName),
-            selectedImage: UIImage(systemName: tab.iconName)
-        )
+        home.tabBarItem =
+            UITabBarItem(
+                title: "Home",
+                image: UIImage(
+                    systemName: "house"
+                ),
+                tag: 0
+            )
 
-        return navigationController
-    }
+        let tools =
+            UINavigationController(
+                rootViewController:
+                    ToolsViewController()
+            )
 
-    private func setupAppearance() {
-        let appearance = UITabBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor.black
+        tools.tabBarItem =
+            UITabBarItem(
+                title: "Tools",
+                image: UIImage(
+                    systemName:
+                        "square.grid.2x2"
+                ),
+                tag: 1
+            )
 
-        appearance.stackedLayoutAppearance.normal.iconColor = UIColor.gray
-        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
-            .foregroundColor: UIColor.gray
+        let settings =
+            UINavigationController(
+                rootViewController:
+                    SettingsViewController()
+            )
+
+        settings.tabBarItem =
+            UITabBarItem(
+                title: "Settings",
+                image: UIImage(
+                    systemName: "gear"
+                ),
+                tag: 2
+            )
+
+        viewControllers = [
+
+            home,
+            tools,
+            settings
         ]
-
-        appearance.stackedLayoutAppearance.selected.iconColor = UIColor.systemPurple
-        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
-            .foregroundColor: UIColor.systemPurple
-        ]
-
-        tabBar.standardAppearance = appearance
-        tabBar.scrollEdgeAppearance = appearance
-        tabBar.tintColor = UIColor.systemPurple
-        tabBar.unselectedItemTintColor = UIColor.gray
     }
 }

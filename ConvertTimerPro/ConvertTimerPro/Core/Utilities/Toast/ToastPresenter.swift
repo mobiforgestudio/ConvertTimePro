@@ -29,7 +29,7 @@ final class ToastPresenter {
 
         toast.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(64)
             $0.width.lessThanOrEqualToSuperview().inset(32)
         }
 
@@ -63,5 +63,30 @@ final class ToastPresenter {
                 }
             }
         }
+    }
+}
+
+extension ToastPresenter {
+
+    func show(
+        message: String
+    ) {
+
+        guard let window =
+            UIApplication.shared
+                .connectedScenes
+                .compactMap({
+                    $0 as? UIWindowScene
+                })
+                .first?
+                .keyWindow
+        else {
+            return
+        }
+
+        show(
+            message: message,
+            in: window
+        )
     }
 }
