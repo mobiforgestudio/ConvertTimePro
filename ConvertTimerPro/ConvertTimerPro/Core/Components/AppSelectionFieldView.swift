@@ -1,5 +1,5 @@
 //
-//  AppDateFieldView.swift
+//  AppSelectionFieldView.swift
 //  ConvertTimerPro
 //
 //  Created by Mac Mini on 30/5/26.
@@ -9,14 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
-enum DisplayMode {
-
-    case date
-
-    case dateTime
-}
-
-final class AppDateFieldView:
+final class AppSelectionFieldView:
     AppCardView {
 
     var onTap: (() -> Void)?
@@ -30,20 +23,6 @@ final class AppDateFieldView:
             AppColor.Text.secondary
     }
 
-    private let iconView = UIImageView().then {
-
-        $0.image =
-            UIImage(
-                systemName: "calendar"
-            )
-
-        $0.tintColor =
-            AppColor.Accent.primary
-
-        $0.contentMode =
-            .scaleAspectFit
-    }
-
     private let valueLabel = UILabel().then {
 
         $0.font =
@@ -53,27 +32,31 @@ final class AppDateFieldView:
             AppColor.Text.primary
     }
 
-    private lazy var formatter:
-        DateFormatter = {
+    private let chevronImageView =
+        UIImageView().then {
 
-            let formatter =
-                DateFormatter()
+            $0.image =
+                UIImage(
+                    systemName:
+                        "chevron.down"
+                )
 
-            formatter.dateStyle =
-                .medium
+            $0.tintColor =
+                AppColor.Text.secondary
 
-            return formatter
-        }()
+            $0.contentMode =
+                .scaleAspectFit
+        }
 
     override func setupView() {
 
         super.setupView()
 
         addSubview(titleLabel)
-
-        addSubview(iconView)
-
         addSubview(valueLabel)
+        addSubview(
+            chevronImageView
+        )
 
         let tap =
             UITapGestureRecognizer(
@@ -91,6 +74,7 @@ final class AppDateFieldView:
     override func setupConstraints() {
 
         titleLabel.snp.makeConstraints {
+
             $0.top.equalToSuperview()
                 .offset(16)
 
@@ -99,7 +83,8 @@ final class AppDateFieldView:
                 .inset(16)
         }
 
-        iconView.snp.makeConstraints {
+        valueLabel.snp.makeConstraints {
+
             $0.leading.equalToSuperview()
                 .offset(16)
 
@@ -107,58 +92,33 @@ final class AppDateFieldView:
                 titleLabel.snp.bottom
             ).offset(12)
 
-            $0.size.equalTo(20)
-
             $0.bottom.equalToSuperview()
                 .offset(-16)
         }
 
-        valueLabel.snp.makeConstraints {
-            $0.centerY.equalTo(
-                iconView
-            )
-
-            $0.leading.equalTo(
-                iconView.snp.trailing
-            ).offset(12)
+        chevronImageView.snp.makeConstraints {
 
             $0.trailing.equalToSuperview()
                 .offset(-16)
+
+            $0.centerY.equalTo(
+                valueLabel
+            )
+
+            $0.size.equalTo(16)
         }
     }
 
     func configure(
         title: String,
-        date: Date,
-        mode: DisplayMode = .date
+        value: String
     ) {
 
-        switch mode {
-
-        case .date:
-
-            formatter.dateStyle =
-                .medium
-
-            formatter.timeStyle =
-                .none
-
-        case .dateTime:
-
-            formatter.dateStyle =
-                .medium
-
-            formatter.timeStyle =
-                .short
-        }
-        
         titleLabel.text =
             title
 
         valueLabel.text =
-            formatter.string(
-                from: date
-            )
+            value
     }
 
     @objc

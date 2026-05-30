@@ -35,7 +35,7 @@ final class MainTabBarController: UITabBarController {
         case .workingDays:
             rootViewController = WorkdaysViewController()
         case .timezone:
-            rootViewController = CalculatorViewController()
+            rootViewController = TimezoneViewController()
         }
 
         let navigationController = UINavigationController(rootViewController: rootViewController)
