@@ -99,6 +99,7 @@ enum UtilityItem:
             return "calendar"
         }
     }
+    
     var category: UtilityCategory {
         
         switch self {
@@ -118,6 +119,67 @@ enum UtilityItem:
         case .calculator:
             
             return .calculation
+        }
+    }
+    
+    var keywords: [String] {
+
+        switch self {
+
+        case .calculator:
+            return [
+                "calculator",
+                "calculate",
+                "time calculation",
+                "duration",
+                "math"
+            ]
+
+        case .timestamp:
+            return [
+                "timestamp",
+                "unix",
+                "epoch",
+                "time converter"
+            ]
+
+        case .countdown:
+            return [
+                "countdown",
+                "remaining days",
+                "target date"
+            ]
+
+        case .workdays:
+            return [
+                "workdays",
+                "business days",
+                "working days",
+                "weekends"
+            ]
+
+        case .timezone:
+            return [
+                "timezone",
+                "utc",
+                "gmt",
+                "time zone",
+                "world clock"
+            ]
+
+        case .age:
+            return [
+                "age",
+                "birthday",
+                "birth date"
+            ]
+
+        case .dateDifference:
+            return [
+                "date difference",
+                "days between",
+                "compare dates"
+            ]
         }
     }
 }

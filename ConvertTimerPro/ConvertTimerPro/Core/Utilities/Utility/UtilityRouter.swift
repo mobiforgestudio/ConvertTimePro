@@ -50,7 +50,8 @@ enum UtilityRouter {
             makeViewController(
                 for: item
             )
-
+        destination.hidesBottomBarWhenPushed = true
+        
         viewController
             .navigationController?
             .pushViewController(
