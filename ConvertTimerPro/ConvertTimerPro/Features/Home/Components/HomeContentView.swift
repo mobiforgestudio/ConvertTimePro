@@ -10,155 +10,285 @@ import SnapKit
 import Then
 
 final class HomeContentView: BaseView {
-
+    
     var onUtilitySelected: ((UtilityItem) -> Void)?
-
-    let recentSection = UtilitySectionView()
-
-    private let scrollView = UIScrollView()
-
-    private let contentView = UIView()
-
-    private let stackView = UIStackView().then {
+    
+    let recentSection =
+    UtilitySectionView()
+    
+    let favoritesSection =
+    UtilitySectionView()
+    
+    let favoriteEmptyCard =
+    EmptyStateCardView()
+    
+    let recentEmptyCard =
+    EmptyStateCardView()
+    
+    private let scrollView =
+    UIScrollView()
+    
+    private let contentView =
+    UIView()
+    
+    private let stackView =
+    UIStackView().then {
+        
         $0.axis = .vertical
         $0.spacing = 24
     }
-
-    private let titleLabel = UILabel().then {
-        $0.text = "ConvertTimer Pro"
-        $0.font = AppFont.largeTitle()
-        $0.textColor = AppColor.Text.primary
+    
+    private let titleLabel =
+    UILabel().then {
+        
+        $0.text =
+        "ConvertTimer Pro"
+        
+        $0.font =
+        AppFont.largeTitle()
+        
+        $0.textColor =
+        AppColor.Text.primary
     }
-
-    private let subtitleLabel = UILabel().then {
-        $0.text = "Time & Productivity Utilities"
-        $0.font = AppFont.bodyMedium()
-        $0.textColor = AppColor.Text.secondary
+    
+    private let subtitleLabel =
+    UILabel().then {
+        
+        $0.text =
+        "Time & Productivity Utilities"
+        
+        $0.font =
+        AppFont.bodyMedium()
+        
+        $0.textColor =
+        AppColor.Text.secondary
     }
-
-    private let countLabel = UILabel().then {
-        $0.text = "\(UtilityItem.allCases.count) Utilities Ready"
-        $0.font = AppFont.caption()
-        $0.textColor = AppColor.Accent.primary
+    
+    private let countLabel =
+    UILabel().then {
+        $0.font =
+        AppFont.caption()
+        
+        $0.textColor =
+        AppColor.Accent.primary
     }
-
-    private let quickActionsTitleLabel = UILabel().then {
-        $0.text = "Quick Actions"
-        $0.font = AppFont.bodyMedium()
-        $0.textColor = AppColor.Text.primary
+    
+    private let quickActionsTitleLabel =
+    UILabel().then {
+        
+        $0.text =
+        "Quick Actions"
+        
+        $0.font =
+        AppFont.bodyMedium()
+        
+        $0.textColor =
+        AppColor.Text.primary
     }
-
-    let currentTimestampButton = UIButton(type: .system).then {
-        $0.setTitle("Current Timestamp", for: .normal)
-        $0.setTitleColor(AppColor.Text.primary, for: .normal)
-        $0.backgroundColor = AppColor.Surface.card
-        $0.layer.cornerRadius = 18
-    }
-
-    let today30DaysButton = UIButton(type: .system).then {
-        $0.setTitle("Today + 30 Days", for: .normal)
-        $0.setTitleColor(AppColor.Text.primary, for: .normal)
-        $0.backgroundColor = AppColor.Surface.card
-        $0.layer.cornerRadius = 18
-    }
-
-    let workdays90Button = UIButton(type: .system).then {
-        $0.setTitle("Today + 90 Workdays", for: .normal)
-        $0.setTitleColor(AppColor.Text.primary, for: .normal)
-        $0.backgroundColor = AppColor.Surface.card
-        $0.layer.cornerRadius = 18
-    }
-
-    private let tipCard = AppCardView()
-
-    private let tipTitleLabel = UILabel().then {
-        $0.text = "Did You Know?"
-        $0.font = AppFont.bodyMedium()
-        $0.textColor = AppColor.Text.primary
-    }
-
-    private let tipDescriptionLabel = UILabel().then {
-        $0.text = "Workdays exclude weekends when calculating business dates."
-        $0.font = AppFont.caption()
-        $0.textColor = AppColor.Text.secondary
-        $0.numberOfLines = 0
-    }
-
+    
+    let currentTimestampButton =
+    QuickActionButton(
+        icon: "clock.fill",
+        title: "Timestamp"
+    )
+    
+    let today30DaysButton =
+    QuickActionButton(
+        icon: "calendar.badge.plus",
+        title: "30 Days Later"
+    )
+    
     override func setupView() {
-
-        backgroundColor = AppColor.Background.primary
-
+        
+        backgroundColor =
+        AppColor.Background.primary
+        
+        favoritesSection.isHidden =
+        true
+        
+        favoriteEmptyCard.isHidden =
+        false
+        
+        
+        recentSection.isHidden =
+        true
+        
+        recentEmptyCard.isHidden =
+        false
+        
+        favoritesSection.showsFavoriteButton =
+        false
+        
+        recentSection.showsFavoriteButton =
+        false
+        
         addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        contentView.addSubview(stackView)
-
-        stackView.addArrangedSubview(titleLabel)
-        stackView.addArrangedSubview(subtitleLabel)
-        stackView.addArrangedSubview(countLabel)
-
-        stackView.addArrangedSubview(quickActionsTitleLabel)
-        stackView.addArrangedSubview(currentTimestampButton)
-        stackView.addArrangedSubview(today30DaysButton)
-        stackView.addArrangedSubview(workdays90Button)
-
-        stackView.addArrangedSubview(recentSection)
-        stackView.addArrangedSubview(tipCard)
-
-        tipCard.addSubview(tipTitleLabel)
-        tipCard.addSubview(tipDescriptionLabel)
-
-        recentSection.onItemSelected = { [weak self] item in
-            self?.onUtilitySelected?(item)
+        
+        scrollView.addSubview(
+            contentView
+        )
+        
+        contentView.addSubview(
+            stackView
+        )
+        
+        stackView.addArrangedSubview(
+            titleLabel
+        )
+        
+        stackView.addArrangedSubview(
+            subtitleLabel
+        )
+        
+        stackView.addArrangedSubview(
+            countLabel
+        )
+        
+        stackView.addArrangedSubview(
+            quickActionsTitleLabel
+        )
+        
+        stackView.addArrangedSubview(
+            currentTimestampButton
+        )
+        
+        stackView.addArrangedSubview(
+            today30DaysButton
+        )
+        
+        stackView.addArrangedSubview(
+            favoriteEmptyCard
+        )
+        
+        stackView.addArrangedSubview(
+            favoritesSection
+        )
+        
+        stackView.addArrangedSubview(
+            recentEmptyCard
+        )
+        
+        stackView.addArrangedSubview(
+            recentSection
+        )
+        
+        favoritesSection.onItemSelected = {
+            [weak self] item in
+            
+            self?.onUtilitySelected?(
+                item
+            )
         }
+        
+        recentSection.onItemSelected = {
+            [weak self] item in
+            
+            self?.onUtilitySelected?(
+                item
+            )
+        }
+        
+        favoriteEmptyCard.configure(
+            icon: "star.circle.fill",
+            title: "Favorite your tools",
+            message: "Tap the star icon in Tools to pin your most-used utilities.",
+            buttonTitle: "Browse Tools"
+        )
+        
+        recentEmptyCard.configure(
+            icon: "clock.arrow.circlepath",
+            title: "No recent activity",
+            message: "Open a utility to see your recent activity here."
+        )
+        
     }
-
+    
     override func setupConstraints() {
-
+        
         scrollView.snp.makeConstraints {
-            $0.edges.equalTo(safeAreaLayoutGuide)
+            
+            $0.edges.equalTo(
+                safeAreaLayoutGuide
+            )
         }
-
+        
         contentView.snp.makeConstraints {
+            
             $0.edges.equalToSuperview()
+            
             $0.width.equalToSuperview()
         }
-
+        
         stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(16)
+            
+            $0.edges.equalToSuperview()
+                .inset(16)
         }
-
+        
         [
             currentTimestampButton,
-            today30DaysButton,
-            workdays90Button
+            today30DaysButton
         ].forEach {
+            
             $0.snp.makeConstraints {
-                $0.height.equalTo(52)
+                
+                $0.height.equalTo(56)
             }
         }
-
-        tipCard.snp.makeConstraints {
-            $0.height.equalTo(110)
-        }
-
-        tipTitleLabel.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview().inset(16)
-        }
-
-        tipDescriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(tipTitleLabel.snp.bottom).offset(8)
-            $0.leading.trailing.equalToSuperview().inset(16)
-            $0.bottom.lessThanOrEqualToSuperview().offset(-16)
-        }
     }
-
+    
+    // MARK: - Public
+    
+    func configureFavorites(
+        items: [UtilityItem]
+    ) {
+        
+        let hasFavorites =
+        !items.isEmpty
+        
+        favoritesSection.isHidden =
+        !hasFavorites
+        
+        favoriteEmptyCard.isHidden =
+        hasFavorites
+        
+        guard hasFavorites else {
+            return
+        }
+        
+        favoritesSection.configure(
+            title: "Favorites",
+            items: items
+        )
+    }
+    
     func configureRecent(
         items: [UtilityItem]
     ) {
-
+        
+        let hasRecent =
+        !items.isEmpty
+        
+        recentSection.isHidden =
+        !hasRecent
+        
+        recentEmptyCard.isHidden =
+        hasRecent
+        
+        guard hasRecent else {
+            return
+        }
+        
         recentSection.configure(
-            title: "Recent",
+            title: "Recently Used",
             items: items
         )
+    }
+    
+    func updateStats(
+        favoriteCount: Int
+    ) {
+        countLabel.text =
+        "\(UtilityItem.allCases.count) Tools • \(favoriteCount) Favorites"
     }
 }

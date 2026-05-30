@@ -14,6 +14,8 @@ final class UtilityCardView:
 
     var onTap: (() -> Void)?
 
+    var onFavoriteTap: (() -> Void)?
+    
     private let iconView =
         UIImageView().then {
 
@@ -46,19 +48,15 @@ final class UtilityCardView:
             $0.numberOfLines = 2
         }
 
-    private let chevronView =
-        UIImageView().then {
-
-            $0.image =
-                UIImage(
-                    systemName:
-                        "chevron.right"
-                )
+    private let favoriteButton =
+        UIButton(
+            type: .system
+        ).then {
 
             $0.tintColor =
-                AppColor.Text.secondary
+                AppColor.Accent.primary
         }
-
+    
     override func setupView() {
 
         super.setupView()
@@ -66,8 +64,27 @@ final class UtilityCardView:
         addSubview(iconView)
         addSubview(titleLabel)
         addSubview(subtitleLabel)
-        addSubview(chevronView)
+        addSubview(favoriteButton)
 
+        favoriteButton.addTarget(
+            self,
+            action: #selector(
+                didTapFavorite
+            ),
+            for: .touchUpInside
+        )
+        
+        favoriteButton.setPreferredSymbolConfiguration(
+            UIImage.SymbolConfiguration(
+                pointSize: 18,
+                weight: .medium
+            ),
+            forImageIn: .normal
+        )
+        
+        favoriteButton.isUserInteractionEnabled =
+            true
+        
         let tap =
             UITapGestureRecognizer(
                 target: self,
@@ -88,7 +105,7 @@ final class UtilityCardView:
 
             $0.centerY.equalToSuperview()
 
-            $0.size.equalTo(24)
+            $0.size.equalTo(20)
         }
 
         titleLabel.snp.makeConstraints {
@@ -100,11 +117,21 @@ final class UtilityCardView:
                 iconView.snp.trailing
             ).offset(12)
 
-            $0.trailing.equalTo(
-                chevronView.snp.leading
-            ).offset(-8)
+            $0.trailing.lessThanOrEqualTo(
+                favoriteButton.snp.leading
+            ).offset(-12)
         }
 
+        favoriteButton.snp.makeConstraints {
+
+            $0.trailing.equalToSuperview()
+                .offset(-16)
+
+            $0.centerY.equalToSuperview()
+
+            $0.size.equalTo(18)
+        }
+        
         subtitleLabel.snp.makeConstraints {
 
             $0.top.equalTo(
@@ -122,20 +149,12 @@ final class UtilityCardView:
             $0.bottom.lessThanOrEqualToSuperview()
                 .offset(-16)
         }
-
-        chevronView.snp.makeConstraints {
-
-            $0.trailing.equalToSuperview()
-                .offset(-16)
-
-            $0.centerY.equalToSuperview()
-
-            $0.size.equalTo(16)
-        }
     }
 
     func configure(
-        item: UtilityItem
+        item: UtilityItem,
+        isFavorite: Bool,
+        showsFavoriteButton: Bool = true
     ) {
 
         titleLabel.text =
@@ -149,11 +168,30 @@ final class UtilityCardView:
                 systemName:
                     item.icon
             )
+
+        favoriteButton.isHidden =
+            !showsFavoriteButton
+
+        favoriteButton.setImage(
+            UIImage(
+                systemName:
+                    isFavorite
+                    ? "star.fill"
+                    : "star"
+            ),
+            for: .normal
+        )
     }
 
     @objc
     private func didTapCard() {
 
         onTap?()
+    }
+    
+    @objc
+    private func didTapFavorite() {
+
+        onFavoriteTap?()
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftData
 
 final class HomeViewController:
     BaseViewController {
@@ -15,6 +16,15 @@ final class HomeViewController:
     
     private let workdaysEngine =
     WorkdaysEngine()
+    
+    private let favoriteStore =
+        FavoriteStore(
+            context:
+                PersistenceController
+                    .shared
+                    .container
+                    .mainContext
+        )
     
     override func loadView() {
         
@@ -31,11 +41,13 @@ final class HomeViewController:
     override func viewWillAppear(
         _ animated: Bool
     ) {
-        
+
         super.viewWillAppear(
             animated
         )
-        
+
+        reloadFavorites()
+
         reloadRecent()
     }
 }
@@ -63,30 +75,43 @@ extension HomeViewController {
             .addTarget(
                 self,
                 action: #selector(
-                    didTapTimestamp
+                    openTimestamp
                 ),
                 for: .touchUpInside
             )
-        
+
         contentView
             .today30DaysButton
             .addTarget(
                 self,
                 action: #selector(
-                    didTap30Days
+                    open30DaysLater
                 ),
                 for: .touchUpInside
             )
         
         contentView
-            .workdays90Button
-            .addTarget(
-                self,
-                action: #selector(
-                    didTap90Workdays
-                ),
-                for: .touchUpInside
-            )
+            .favoritesSection
+            .onItemSelected = {
+                [weak self] item in
+
+                guard let self else {
+                    return
+                }
+
+                UtilityRouter.open(
+                    item,
+                    from: self
+                )
+            }
+        
+        contentView
+            .favoriteEmptyCard
+            .onButtonTap = {
+                [weak self] in
+
+                self?.openToolsTab()
+            }
     }
 }
 
@@ -99,12 +124,33 @@ extension HomeViewController {
             items: items
         )
     }
+    
+    private func reloadFavorites() {
+
+        let favorites =
+            favoriteStore
+                .favoriteItems()
+
+        contentView
+            .configureFavorites(
+                items: favorites
+            )
+
+        contentView
+            .updateStats(
+                favoriteCount:
+                    favorites.count
+            )
+    }
 }
 
 extension HomeViewController {
+ 
     @objc
-    private func didTapTimestamp() {
-        
+    private func openTimestamp() {
+
+        HapticEngine.shared.light()
+
         let timestamp =
         String(
             Int(
@@ -118,10 +164,12 @@ extension HomeViewController {
             value: timestamp
         )
     }
-    
+
     @objc
-    private func didTap30Days() {
-        
+    private func open30DaysLater() {
+
+        HapticEngine.shared.light()
+
         let formatter =
         DateFormatter()
         
@@ -143,28 +191,18 @@ extension HomeViewController {
                 )
         )
     }
-    
-    @objc
-    private func didTap90Workdays() {
-        
-        let result =
-        workdaysEngine.calculate(from: Date(),
-                                 workdays: 90
-        )
-        
-        let formatter =
-        DateFormatter()
-        
-        formatter.dateStyle =
-            .medium
-        
-        showResult(
-            title: "Today + 90 Workdays",
-            value:
-                formatter.string(
-                    from: result.targetDate
-                )
-        )
+
+    private func openToolsTab() {
+
+        HapticEngine.shared.light()
+
+        guard let tabBarController =
+            tabBarController
+        else {
+            return
+        }
+
+        tabBarController.selectedIndex = 1
     }
     
     private func showResult(

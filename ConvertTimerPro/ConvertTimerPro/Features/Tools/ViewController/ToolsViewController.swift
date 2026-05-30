@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftData
 
 final class ToolsViewController:
     BaseViewController {
@@ -15,6 +16,15 @@ final class ToolsViewController:
     
     private let searchEngine =
     UtilitySearchEngine()
+    
+    private let favoriteStore =
+        FavoriteStore(
+            context:
+                PersistenceController
+                    .shared
+                    .container
+                    .mainContext
+        )
     
     override func loadView() {
         
@@ -45,9 +55,10 @@ private extension ToolsViewController {
             contentView.dateSection,
             contentView.calculationSection,
             contentView.searchResultSection
-        ].forEach {
+        ]
+        .forEach { section in
             
-            $0.onItemSelected = {
+            section.onItemSelected = {
                 [weak self] item in
                 
                 guard let self else {
@@ -57,6 +68,14 @@ private extension ToolsViewController {
                 UtilityRouter.open(
                     item,
                     from: self
+                )
+            }
+            
+            section.onFavoriteTapped = {
+                [weak self] item in
+
+                self?.toggleFavorite(
+                    item
                 )
             }
         }
@@ -139,6 +158,63 @@ private extension ToolsViewController {
         contentView.setEmptyState(
             visible:
                 result.isEmpty
+        )
+    }
+    
+    private func toggleFavorite(
+        _ item: UtilityItem
+    ) {
+
+        let wasFavorite =
+            favoriteStore
+                .isFavorite(
+                    item
+                )
+
+        favoriteStore.toggle(
+            item
+        )
+
+        ToastPresenter.shared.show(
+            message:
+                wasFavorite
+                ? "Removed from Favorites"
+                : "Added to Favorites"
+        )
+
+        refreshCurrentState()
+    }
+    
+    private func refreshCurrentState() {
+
+        let query =
+            contentView
+                .searchTextField
+                .text ?? ""
+
+        let trimmed =
+            query.trimmingCharacters(
+                in: .whitespacesAndNewlines
+            )
+
+        if trimmed.isEmpty {
+
+            reloadSections(
+                items:
+                    UtilityItem.allCases
+            )
+
+            return
+        }
+
+        let result =
+            searchEngine.search(
+                query: trimmed,
+                in: UtilityItem.allCases
+            )
+
+        contentView.showSearchResults(
+            result
         )
     }
 }

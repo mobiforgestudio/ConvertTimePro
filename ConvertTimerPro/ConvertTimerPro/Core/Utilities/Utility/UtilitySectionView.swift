@@ -8,12 +8,26 @@
 import UIKit
 import SnapKit
 import Then
+import SwiftData
 
 final class UtilitySectionView:
     BaseView {
     
     var onItemSelected:
     ((UtilityItem) -> Void)?
+    
+    var onFavoriteTapped:
+    ((UtilityItem) -> Void)?
+    
+    let favoriteStore =
+        FavoriteStore(
+            context:
+                PersistenceController
+                    .shared
+                    .container
+                    .mainContext
+        )
+    var showsFavoriteButton = true
     
     private let titleLabel =
     UILabel().then {
@@ -76,30 +90,45 @@ final class UtilitySectionView:
             }
         
         items.forEach { item in
-            
+
             let card =
-            UtilityCardView()
-            
+                UtilityCardView()
+
             card.configure(
-                item: item
+                item: item,
+                isFavorite:
+                    favoriteStore
+                        .isFavorite(item),
+                showsFavoriteButton:
+                    showsFavoriteButton
             )
-            
+
             card.onTap = {
                 [weak self] in
-                
+
                 self?.onItemSelected?(
                     item
                 )
             }
-            
+
+            card.onFavoriteTap = {
+                [weak self] in
+
+                self?.onFavoriteTapped?(
+                    item
+                )
+            }
+
             stackView
                 .addArrangedSubview(
                     card
                 )
-            
+
             card.snp.makeConstraints {
-                
-                $0.height.equalTo(90)
+
+                $0.height.equalTo(
+                    90
+                )
             }
         }
     }

@@ -26,7 +26,9 @@ final class PersistenceController {
 
             container =
                 try ModelContainer(
-                    for: HistoryRecord.self
+                    for:
+                        HistoryRecord.self,
+                        FavoriteRecord.self
                 )
 
         } catch {
