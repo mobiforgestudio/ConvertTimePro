@@ -68,7 +68,7 @@ final class CountdownContentView: BaseView {
     }
 
     let dateInputView =
-        CountdownDateInputView()
+        AppDateFieldView()
 
     let quickChipsView =
         CountdownQuickChipsView()
@@ -162,7 +162,7 @@ final class CountdownContentView: BaseView {
         }
 
         resultCardView.snp.makeConstraints {
-            $0.height.equalTo(340)
+            $0.height.equalTo(250)
         }
     }
 }

@@ -166,6 +166,7 @@ private extension CountdownViewController {
         contentView
             .dateInputView
             .configure(
+                title: "Target Date",
                 date: selectedDate
             )
 
@@ -239,6 +240,7 @@ private extension CountdownViewController {
         contentView
             .dateInputView
             .configure(
+                title: "Target Date",
                 date: targetDate
             )
 
@@ -337,6 +339,7 @@ private extension CountdownViewController {
         contentView
             .dateInputView
             .configure(
+                title: "Target Date",
                 date: date
             )
 

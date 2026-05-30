@@ -9,10 +9,10 @@ import UIKit
 import SnapKit
 import Then
 
-final class CountdownResultCardView: BaseView {
+final class CountdownResultCardView: AppCardView {
 
     var onCopy: (() -> Void)?
-    
+
     private let daysLabel = UILabel().then {
         $0.font = .systemFont(
             ofSize: 56,
@@ -23,12 +23,11 @@ final class CountdownResultCardView: BaseView {
             AppColor.Text.primary
 
         $0.textAlignment = .center
-
-        $0.text = "-- Days"
     }
 
     private let subtitleLabel = UILabel().then {
-        $0.font = AppFont.bodyMedium()
+        $0.font =
+            AppFont.bodyMedium()
 
         $0.textColor =
             AppColor.Text.secondary
@@ -36,8 +35,6 @@ final class CountdownResultCardView: BaseView {
         $0.textAlignment = .center
 
         $0.numberOfLines = 2
-
-        $0.text = "Select a target date"
     }
 
     private let dividerView = UIView().then {
@@ -45,56 +42,10 @@ final class CountdownResultCardView: BaseView {
             AppColor.Border.subtle
     }
 
-    private let weeksValueLabel = UILabel().then {
-        $0.font = .systemFont(
-            ofSize: 24,
-            weight: .semibold
-        )
-
-        $0.textColor =
-            AppColor.Text.primary
-
-        $0.textAlignment = .center
-    }
-
-    private let weeksTitleLabel = UILabel().then {
-        $0.text = "Weeks"
-
-        $0.font = AppFont.caption()
-
-        $0.textColor =
-            AppColor.Text.secondary
-
-        $0.textAlignment = .center
-    }
-
-    private let hoursValueLabel = UILabel().then {
-        $0.font = .systemFont(
-            ofSize: 24,
-            weight: .semibold
-        )
-
-        $0.textColor =
-            AppColor.Text.primary
-
-        $0.textAlignment = .center
-    }
-
-    private let hoursTitleLabel = UILabel().then {
-        $0.text = "Hours"
-
-        $0.font = AppFont.caption()
-
-        $0.textColor =
-            AppColor.Text.secondary
-
-        $0.textAlignment = .center
-    }
-
     private let countdownLabel = UILabel().then {
 
         $0.font = .systemFont(
-            ofSize: 24,
+            ofSize: 28,
             weight: .semibold
         )
 
@@ -102,61 +53,18 @@ final class CountdownResultCardView: BaseView {
             AppColor.Accent.primary
 
         $0.textAlignment = .center
-
-        $0.text = "--h --m --s"
     }
-    
-    private lazy var weeksStack =
-        UIStackView(
-            arrangedSubviews: [
-                weeksValueLabel,
-                weeksTitleLabel
-            ]
-        ).then {
-            $0.axis = .vertical
-            $0.spacing = 4
-        }
-
-    private lazy var hoursStack =
-        UIStackView(
-            arrangedSubviews: [
-                hoursValueLabel,
-                hoursTitleLabel
-            ]
-        ).then {
-            $0.axis = .vertical
-            $0.spacing = 4
-        }
-
-    private lazy var bottomStack =
-        UIStackView(
-            arrangedSubviews: [
-                weeksStack,
-                hoursStack
-            ]
-        ).then {
-            $0.axis = .horizontal
-            $0.distribution = .fillEqually
-        }
 
     override func setupView() {
 
-        backgroundColor =
-            AppColor.Surface.card
-
-        layer.cornerRadius = 24
-
-        layer.borderWidth = 1
-
-        layer.borderColor =
-            AppColor.Border.subtle.cgColor
-
         addSubview(daysLabel)
+
         addSubview(subtitleLabel)
+
         addSubview(dividerView)
+
         addSubview(countdownLabel)
-        addSubview(bottomStack)
-        
+
         let tap =
             UITapGestureRecognizer(
                 target: self,
@@ -170,20 +78,13 @@ final class CountdownResultCardView: BaseView {
         )
 
         isUserInteractionEnabled = true
-        
     }
 
-    @objc
-    private func didTapCard() {
-
-        onCopy?()
-    }
-    
     override func setupConstraints() {
 
         daysLabel.snp.makeConstraints {
             $0.top.equalToSuperview()
-                .offset(36)
+                .offset(32)
 
             $0.leading.trailing
                 .equalToSuperview()
@@ -215,24 +116,14 @@ final class CountdownResultCardView: BaseView {
         countdownLabel.snp.makeConstraints {
             $0.top.equalTo(
                 dividerView.snp.bottom
-            ).offset(20)
+            ).offset(24)
 
             $0.leading.trailing
                 .equalToSuperview()
-                .inset(24)
-        }
-
-        bottomStack.snp.makeConstraints {
-            $0.top.equalTo(
-                countdownLabel.snp.bottom
-            ).offset(20)
-
-            $0.leading.trailing
-                .equalToSuperview()
-                .inset(24)
+                .inset(20)
 
             $0.bottom.equalToSuperview()
-                .offset(-24)
+                .offset(-32)
         }
     }
 }
@@ -260,25 +151,6 @@ extension CountdownResultCardView {
                 AppColor.Text.primary
         }
 
-        weeksValueLabel.text =
-            "\(result.weeks)"
-
-        hoursValueLabel.text =
-            NumberFormatter.localizedString(
-                from: NSNumber(
-                    value: result.hours
-                ),
-                number: .decimal
-            )
-
-        countdownLabel.text =
-            String(
-                format: "%02dh %02dm %02ds",
-                result.remainingHours,
-                result.remainingMinutes,
-                result.remainingSeconds
-            )
-        
         if !result.eventName.isEmpty {
 
             subtitleLabel.text =
@@ -293,6 +165,14 @@ extension CountdownResultCardView {
                 ? "Passed on \(formattedDate(result.targetDate))"
                 : "Until \(formattedDate(result.targetDate))"
         }
+
+        countdownLabel.text =
+            String(
+                format: "%02dh %02dm %02ds",
+                result.remainingHours,
+                result.remainingMinutes,
+                result.remainingSeconds
+            )
     }
 }
 
@@ -310,5 +190,11 @@ private extension CountdownResultCardView {
         return formatter.string(
             from: date
         )
+    }
+
+    @objc
+    func didTapCard() {
+
+        onCopy?()
     }
 }

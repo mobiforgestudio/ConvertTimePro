@@ -33,7 +33,7 @@ final class MainTabBarController: UITabBarController {
         case .countdown:
             rootViewController = CountdownViewController()
         case .workingDays:
-            rootViewController = CalculatorViewController()
+            rootViewController = WorkdaysViewController()
         case .timezone:
             rootViewController = CalculatorViewController()
         }

@@ -14,7 +14,11 @@ final class CountdownEngine {
         eventName: String = ""
     ) -> CountdownResult {
 
-        let now = Date()
+        let calendar =
+            Calendar.current
+
+        let now =
+            Date()
 
         let interval =
             targetDate.timeIntervalSince(
@@ -30,11 +34,21 @@ final class CountdownEngine {
         let totalSeconds =
             Int(absoluteInterval)
 
+        let startToday =
+            calendar.startOfDay(
+                for: now
+            )
+
+        let startTarget =
+            calendar.startOfDay(
+                for: targetDate
+            )
+
         let rawDays =
-            Calendar.current.dateComponents(
+            calendar.dateComponents(
                 [.day],
-                from: now,
-                to: targetDate
+                from: startToday,
+                to: startTarget
             ).day ?? 0
 
         let days =
