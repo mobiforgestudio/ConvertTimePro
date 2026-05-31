@@ -127,7 +127,7 @@ final class UtilitySectionView:
             card.snp.makeConstraints {
 
                 $0.height.equalTo(
-                    90
+                    75
                 )
             }
         }

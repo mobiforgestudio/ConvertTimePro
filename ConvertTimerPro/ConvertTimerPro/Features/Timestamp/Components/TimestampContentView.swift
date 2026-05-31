@@ -26,7 +26,7 @@ final class TimestampContentView: BaseView {
     }
 
     let titleLabel = UILabel().then {
-        $0.text = "Unix Time"
+        $0.text = "Timestamp Converter"
 
         $0.font =
             AppFont.largeTitle()

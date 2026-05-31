@@ -16,7 +16,7 @@ final class WorkdaysStepperView: BaseView {
     private(set) var value = 30 {
         didSet {
             valueLabel.text =
-                "\(value) Days"
+                "\(value) Business Days"
         }
     }
 
@@ -68,7 +68,7 @@ final class WorkdaysStepperView: BaseView {
             AppColor.Accent.primary
 
         valueLabel.text =
-            "\(value) Days"
+            "\(value) Business Days"
 
         addSubview(minusButton)
         addSubview(valueLabel)

@@ -289,6 +289,6 @@ final class HomeContentView: BaseView {
         favoriteCount: Int
     ) {
         countLabel.text =
-        "\(UtilityItem.allCases.count) Tools • \(favoriteCount) Favorites"
+        "\(UtilityItem.allCases.count) Productivity Tools"
     }
 }

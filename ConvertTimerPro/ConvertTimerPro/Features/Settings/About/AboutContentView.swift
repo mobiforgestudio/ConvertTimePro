@@ -39,20 +39,6 @@ final class AboutContentView:
             $0.spacing = 20
         }
 
-    private let iconLabel =
-        UILabel().then {
-
-            $0.text = "⏱"
-
-            $0.font =
-                .systemFont(
-                    ofSize: 56
-                )
-
-            $0.textAlignment =
-                .center
-        }
-
     private let appNameLabel =
         UILabel().then {
 
@@ -132,11 +118,6 @@ final class AboutContentView:
 private extension AboutContentView {
 
     func setupHeader() {
-
-        stackView.addArrangedSubview(
-            iconLabel
-        )
-
         stackView.addArrangedSubview(
             appNameLabel
         )

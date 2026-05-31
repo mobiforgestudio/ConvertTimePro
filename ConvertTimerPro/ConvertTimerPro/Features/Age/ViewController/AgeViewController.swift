@@ -46,7 +46,7 @@ extension AgeViewController {
         contentView
             .birthDateField
             .configure(
-                title: "Birth Date",
+                title: "Date of Birth",
                 date: viewModel.birthDate
             )
     }

@@ -12,21 +12,10 @@ import Then
 final class AgeResultCardView:
     AppCardView {
     
-    private let iconLabel = UILabel().then {
-        
-        $0.text = "🎂"
-        
-        $0.font = .systemFont(
-            ofSize: 36
-        )
-        
-        $0.textAlignment = .center
-    }
-    
     private let ageLabel = UILabel().then {
         
         $0.font = .systemFont(
-            ofSize: 64,
+            ofSize: 72,
             weight: .bold
         )
         
@@ -99,8 +88,7 @@ final class AgeResultCardView:
     override func setupView() {
         
         super.setupView()
-        
-        addSubview(iconLabel)
+    
         addSubview(ageLabel)
         addSubview(yearsLabel)
         addSubview(dividerTop)
@@ -112,19 +100,9 @@ final class AgeResultCardView:
     
     override func setupConstraints() {
         
-        iconLabel.snp.makeConstraints {
-            
-            $0.top.equalToSuperview()
-                .offset(24)
-            
-            $0.centerX.equalToSuperview()
-        }
-        
         ageLabel.snp.makeConstraints {
             
-            $0.top.equalTo(
-                iconLabel.snp.bottom
-            ).offset(8)
+            $0.top.equalToSuperview().offset(16)
             
             $0.leading.trailing
                 .equalToSuperview()
@@ -204,44 +182,74 @@ final class AgeResultCardView:
     }
     
     private func makeRow(
+        icon: String,
         title: String,
         value: String
     ) -> UIStackView {
         
+        let iconView = UIImageView()
+
+        iconView.image =
+            UIImage(systemName: icon)
+
+        iconView.tintColor =
+            AppColor.Accent.primary
+
+        iconView.contentMode =
+            .scaleAspectFit
+
+        iconView.snp.makeConstraints {
+
+            $0.size.equalTo(18)
+        }
+
         let left = UILabel()
-        
+
         left.text = title
-        
+
         left.font =
-        AppFont.bodyMedium()
-        
+            AppFont.bodyMedium()
+
         left.textColor =
-        AppColor.Text.secondary
-        
+            AppColor.Text.secondary
+
+        let titleStack =
+            UIStackView(
+                arrangedSubviews: [
+                    iconView,
+                    left
+                ]
+            )
+
+        titleStack.axis = .horizontal
+
+        titleStack.spacing = 8
+
         let right = UILabel()
-        
+
         right.text = value
-        
+
         right.font =
-        AppFont.bodyMedium()
-        
+            AppFont.bodyMedium()
+
         right.textAlignment = .right
-        
+
         right.textColor =
-        AppColor.Text.primary
-        
+            AppColor.Text.primary
+
         let spacer = UIView()
-        
-        let stack = UIStackView(
-            arrangedSubviews: [
-                left,
-                spacer,
-                right
-            ]
-        )
-        
+
+        let stack =
+            UIStackView(
+                arrangedSubviews: [
+                    titleStack,
+                    spacer,
+                    right
+                ]
+            )
+
         stack.axis = .horizontal
-        
+
         return stack
     }
     
@@ -264,28 +272,31 @@ final class AgeResultCardView:
         
         nextBirthdayLabel.text =
         """
-        🎉 Next Birthday
+        Next Birthday
 
         in \(result.nextBirthdayDaysRemaining) days
         """
         
         statsStack.addArrangedSubview(
             makeRow(
-                title: "📅 Days",
+                icon: "calendar",
+                title: "Days",
                 value: result.totalDays.formatted()
             )
         )
         
         statsStack.addArrangedSubview(
             makeRow(
-                title: "⏰ Hours",
+                icon: "clock",
+                title: "Hours",
                 value: result.totalHours.formatted()
             )
         )
         
         statsStack.addArrangedSubview(
             makeRow(
-                title: "⌛ Minutes",
+                icon: "timer",
+                title: "Minutes",
                 value: result.totalMinutes.formatted()
             )
         )

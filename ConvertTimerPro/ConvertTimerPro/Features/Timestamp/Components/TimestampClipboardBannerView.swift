@@ -14,7 +14,7 @@ final class TimestampClipboardBannerView: BaseView {
     var onConvert: (() -> Void)?
 
     private let titleLabel = UILabel().then {
-        $0.text = "Timestamp detected"
+        $0.text = "Detected Timestamp"
         $0.font = AppFont.bodyMedium()
         $0.textColor = AppColor.Text.primary
     }

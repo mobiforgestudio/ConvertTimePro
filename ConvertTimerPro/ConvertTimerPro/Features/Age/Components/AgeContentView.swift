@@ -121,7 +121,7 @@ final class AgeContentView:
 
         resultCardView.snp.makeConstraints {
 
-            $0.height.equalTo(440)
+            $0.height.equalTo(400)
         }
     }
 }
