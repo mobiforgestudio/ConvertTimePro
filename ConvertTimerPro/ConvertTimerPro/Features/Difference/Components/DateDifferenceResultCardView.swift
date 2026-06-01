@@ -9,286 +9,300 @@ import UIKit
 import SnapKit
 import Then
 
-final class DateDifferenceResultCardView:
-    AppCardView {
-
-    private let iconLabel = UILabel().then {
-
-        $0.text = "📆"
-
-        $0.font = .systemFont(
-            ofSize: 36
-        )
-
-        $0.textAlignment = .center
-    }
-
-    private let daysLabel = UILabel().then {
-
+final class DateDifferenceResultCardView: AppCardView {
+    
+    private let heroValueLabel = UILabel().then {
         $0.font = .systemFont(
             ofSize: 64,
             weight: .bold
         )
-
         $0.textAlignment = .center
-
-        $0.textColor =
-            AppColor.Accent.primary
+        $0.textColor = AppColor.Accent.primary
     }
-
-    private let daysTitleLabel = UILabel().then {
-
-        $0.text = "Days"
-
-        $0.font =
-            AppFont.bodyMedium()
-
+    
+    private let heroTitleLabel = UILabel().then {
+        $0.font = AppFont.bodyMedium()
         $0.textAlignment = .center
-
-        $0.textColor =
-            AppColor.Text.secondary
+        $0.textColor = AppColor.Text.secondary
     }
-
+    
     private let dividerTop = UIView().then {
-
-        $0.backgroundColor =
-            AppColor.Border.subtle
+        $0.backgroundColor = AppColor.Border.subtle
     }
-
-    private let weeksLabel = UILabel().then {
-
-        $0.font =
-            AppFont.bodyMedium()
-
+    
+    private let summaryLabel = UILabel().then {
+        $0.font = AppFont.bodyMedium()
         $0.textAlignment = .center
-
-        $0.textColor =
-            AppColor.Text.primary
+        $0.textColor = AppColor.Text.primary
     }
-
-    private let periodLabel = UILabel().then {
-
-        $0.font =
-            AppFont.bodyMedium()
-
-        $0.textAlignment = .center
-
-        $0.textColor =
-            AppColor.Text.secondary
-
-        $0.numberOfLines = 0
-    }
-
+    
     private let dividerBottom = UIView().then {
-
-        $0.backgroundColor =
-            AppColor.Border.subtle
+        $0.backgroundColor = AppColor.Border.subtle
     }
-
-    private let statsStack =
-        UIStackView().then {
-
-            $0.axis = .vertical
-
-            $0.spacing = 12
-        }
-
+    
+    private let statsStack = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 12
+    }
+    
     override func setupView() {
-
+        
         super.setupView()
-
-        addSubview(iconLabel)
-        addSubview(daysLabel)
-        addSubview(daysTitleLabel)
-
+        
+        addSubview(heroValueLabel)
+        addSubview(heroTitleLabel)
+        
         addSubview(dividerTop)
-
-        addSubview(weeksLabel)
-        addSubview(periodLabel)
-
+        addSubview(summaryLabel)
         addSubview(dividerBottom)
-
+        
         addSubview(statsStack)
     }
-
+    
     override func setupConstraints() {
-
-        iconLabel.snp.makeConstraints {
-
+        
+        heroValueLabel.snp.makeConstraints {
             $0.top.equalToSuperview()
                 .offset(24)
-
-            $0.centerX.equalToSuperview()
-        }
-
-        daysLabel.snp.makeConstraints {
-
-            $0.top.equalTo(
-                iconLabel.snp.bottom
-            ).offset(8)
-
+            
             $0.leading.trailing
                 .equalToSuperview()
                 .inset(16)
         }
-
-        daysTitleLabel.snp.makeConstraints {
-
+        
+        heroTitleLabel.snp.makeConstraints {
             $0.top.equalTo(
-                daysLabel.snp.bottom
+                heroValueLabel.snp.bottom
             ).offset(4)
-
+            
             $0.centerX.equalToSuperview()
         }
-
+        
         dividerTop.snp.makeConstraints {
-
             $0.top.equalTo(
-                daysTitleLabel.snp.bottom
+                heroTitleLabel.snp.bottom
             ).offset(20)
-
+            
             $0.leading.trailing
                 .equalToSuperview()
                 .inset(24)
-
+            
             $0.height.equalTo(1)
         }
-
-        weeksLabel.snp.makeConstraints {
-
+        
+        summaryLabel.snp.makeConstraints {
             $0.top.equalTo(
                 dividerTop.snp.bottom
             ).offset(16)
-
+            
             $0.leading.trailing
                 .equalToSuperview()
                 .inset(16)
         }
-
-        periodLabel.snp.makeConstraints {
-
-            $0.top.equalTo(
-                weeksLabel.snp.bottom
-            ).offset(8)
-
-            $0.leading.trailing
-                .equalToSuperview()
-                .inset(16)
-        }
-
+        
         dividerBottom.snp.makeConstraints {
-
             $0.top.equalTo(
-                periodLabel.snp.bottom
+                summaryLabel.snp.bottom
             ).offset(16)
-
+            
             $0.leading.trailing
                 .equalToSuperview()
                 .inset(24)
-
+            
             $0.height.equalTo(1)
         }
-
+        
         statsStack.snp.makeConstraints {
-
             $0.top.equalTo(
                 dividerBottom.snp.bottom
             ).offset(20)
-
+            
             $0.leading.trailing
                 .equalToSuperview()
                 .inset(24)
-
+            
             $0.bottom.lessThanOrEqualToSuperview()
                 .offset(-24)
         }
     }
-
+    
     private func makeRow(
+        icon: String,
         title: String,
         value: String
     ) -> UIStackView {
-
-        let left = UILabel()
-
-        left.text = title
-
-        left.font =
-            AppFont.bodyMedium()
-
-        left.textColor =
-            AppColor.Text.secondary
-
-        let right = UILabel()
-
-        right.text = value
-
-        right.font =
-            AppFont.bodyMedium()
-
-        right.textAlignment =
-            .right
-
-        right.textColor =
-            AppColor.Text.primary
-
-        let spacer =
-            UIView()
-
-        let stack =
-            UIStackView(
-                arrangedSubviews: [
-                    left,
-                    spacer,
-                    right
-                ]
+        
+        let iconView = UIImageView().then {
+            
+            $0.image = UIImage(
+                systemName: icon
             )
-
-        stack.axis =
-            .horizontal
-
-        return stack
+            
+            $0.tintColor =
+            AppColor.Accent.primary
+            
+            $0.contentMode =
+                .scaleAspectFit
+        }
+        
+        iconView.snp.makeConstraints {
+            $0.width.height.equalTo(18)
+        }
+        
+        let titleLabel = UILabel()
+        
+        titleLabel.text = title
+        
+        titleLabel.font =
+        AppFont.bodyMedium()
+        
+        titleLabel.textColor =
+        AppColor.Text.secondary
+        
+        let leftStack = UIStackView(
+            arrangedSubviews: [
+                iconView,
+                titleLabel
+            ]
+        )
+        
+        leftStack.axis = .horizontal
+        leftStack.spacing = 8
+        
+        let valueLabel = UILabel()
+        
+        valueLabel.text = value
+        
+        valueLabel.font =
+            .monospacedDigitSystemFont(
+                ofSize: 18,
+                weight: .medium
+            )
+        
+        valueLabel.textAlignment = .right
+        
+        valueLabel.textColor =
+        AppColor.Text.primary
+        
+        let spacer = UIView()
+        
+        let row = UIStackView(
+            arrangedSubviews: [
+                leftStack,
+                spacer,
+                valueLabel
+            ]
+        )
+        
+        row.axis = .horizontal
+        
+        return row
     }
-
+    
     func configure(
         result: DateDifferenceResult
     ) {
-
-        daysLabel.text =
-            result.totalDays
-                .formatted()
-
-        weeksLabel.text =
-            "\(result.totalWeeks.formatted()) Weeks"
-
-        periodLabel.text =
-        """
-        \(result.years) Years • \(result.months) Months • \(result.days) Days
-        """
-
-        statsStack.arrangedSubviews
-            .forEach {
-
-                statsStack
-                    .removeArrangedSubview(
-                        $0
-                    )
-
-                $0.removeFromSuperview()
-            }
-
+        
+        if result.totalDays == 0 {
+            
+            heroValueLabel.text = "0"
+            heroTitleLabel.text = "Days"
+            
+            summaryLabel.text = "Same Date"
+            
+        }
+        
+        else if result.years > 0 {
+            
+            heroValueLabel.text =
+            "\(result.years)"
+            
+            heroTitleLabel.text =
+            result.years == 1
+            ? "Year"
+            : "Years"
+            
+            summaryLabel.text =
+            """
+            \(plural(result.months,
+                     singular: "Month",
+                     plural: "Months"))
+            •
+            \(plural(result.days,
+                     singular: "Day",
+                     plural: "Days"))
+            """
+            
+        } else {
+            
+            heroValueLabel.text =
+            "\(result.totalDays)"
+            
+            heroTitleLabel.text =
+            result.totalDays == 1
+            ? "Day"
+            : "Days"
+            
+            summaryLabel.text =
+            """
+            \(plural(result.months,
+                     singular: "Month",
+                     plural: "Months"))
+            •
+            \(plural(result.days,
+                     singular: "Day",
+                     plural: "Days"))
+            """
+        }
+        
+        statsStack.arrangedSubviews.forEach {
+            
+            statsStack.removeArrangedSubview($0)
+            
+            $0.removeFromSuperview()
+        }
+        
         statsStack.addArrangedSubview(
             makeRow(
-                title: "⏰ Hours",
+                icon: "calendar",
+                title: "Days",
+                value: result.totalDays.formatted()
+            )
+        )
+        
+        statsStack.addArrangedSubview(
+            makeRow(
+                icon: "calendar.day.timeline.left",
+                title: "Weeks",
+                value: result.totalWeeks.formatted()
+            )
+        )
+        
+        statsStack.addArrangedSubview(
+            makeRow(
+                icon: "clock",
+                title: "Hours",
                 value: result.totalHours.formatted()
             )
         )
-
+        
         statsStack.addArrangedSubview(
             makeRow(
-                title: "⌛ Minutes",
+                icon: "timer",
+                title: "Minutes",
                 value: result.totalMinutes.formatted()
             )
         )
+    }
+    
+    func plural(
+        _ value: Int,
+        singular: String,
+        plural: String
+    ) -> String {
+        
+        value == 1
+        ? "\(value) \(singular)"
+        : "\(value) \(plural)"
     }
 }

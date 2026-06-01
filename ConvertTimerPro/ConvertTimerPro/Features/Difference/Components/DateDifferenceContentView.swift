@@ -51,20 +51,24 @@ final class DateDifferenceContentView:
     let endDateField =
         AppDateFieldView()
 
-    let swapButton =
-        UIButton(type: .system).then {
+    let swapButton = UIButton(type: .system).then {
 
-            $0.setImage(
-                UIImage(
-                    systemName:
-                        "arrow.up.arrow.down.circle.fill"
-                ),
-                for: .normal
-            )
+        $0.setImage(
+            UIImage(
+                systemName:
+                    "arrow.up.arrow.down.circle.fill"
+            )?.applyingSymbolConfiguration(
+                UIImage.SymbolConfiguration(
+                    pointSize: 36,
+                    weight: .regular
+                )
+            ),
+            for: .normal
+        )
 
-            $0.tintColor =
-                AppColor.Accent.primary
-        }
+        $0.tintColor =
+            AppColor.Accent.primary
+    }
 
     // MARK: - Result
 
@@ -163,12 +167,12 @@ final class DateDifferenceContentView:
 
         swapButton.snp.makeConstraints {
 
-            $0.height.equalTo(44)
+            $0.height.equalTo(48)
         }
 
         resultCardView.snp.makeConstraints {
 
-            $0.height.equalTo(380)
+            $0.height.equalTo(360)
         }
     }
 }

@@ -14,8 +14,17 @@ final class DateDifferenceEngine {
         endDate: Date
     ) -> DateDifferenceResult {
 
-        let calendar =
-            Calendar.current
+        let calendar = Calendar.current
+
+        let normalizedStart =
+            calendar.startOfDay(
+                for: startDate
+            )
+
+        let normalizedEnd =
+            calendar.startOfDay(
+                for: endDate
+            )
 
         let components =
             calendar.dateComponents(
@@ -24,28 +33,34 @@ final class DateDifferenceEngine {
                     .month,
                     .day
                 ],
-                from: startDate,
-                to: endDate
+                from: normalizedStart,
+                to: normalizedEnd
             )
 
         let totalDays =
             abs(
                 calendar.dateComponents(
                     [.day],
-                    from: startDate,
-                    to: endDate
+                    from: normalizedStart,
+                    to: normalizedEnd
                 ).day ?? 0
             )
 
         return DateDifferenceResult(
             years:
-                abs(components.year ?? 0),
+                abs(
+                    components.year ?? 0
+                ),
 
             months:
-                abs(components.month ?? 0),
+                abs(
+                    components.month ?? 0
+                ),
 
             days:
-                abs(components.day ?? 0),
+                abs(
+                    components.day ?? 0
+                ),
 
             totalDays:
                 totalDays,
