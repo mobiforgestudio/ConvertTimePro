@@ -29,6 +29,54 @@ class BaseViewController: UIViewController {
         .lightContent
     }
 
+    // MARK: - Navigation Actions
+
+    func setupNavigationActions(
+        copyAction: Selector? = nil,
+        shareAction: Selector? = nil
+    ) {
+
+        var items:
+            [UIBarButtonItem] = []
+
+        if let shareAction {
+
+            let shareItem =
+                UIBarButtonItem(
+                    image: UIImage(
+                        systemName: "square.and.arrow.up"
+                    ),
+                    style: .plain,
+                    target: self,
+                    action: shareAction
+                )
+
+            items.append(
+                shareItem
+            )
+        }
+
+        if let copyAction {
+
+            let copyItem =
+                UIBarButtonItem(
+                    image: UIImage(
+                        systemName: "doc.on.doc"
+                    ),
+                    style: .plain,
+                    target: self,
+                    action: copyAction
+                )
+
+            items.append(
+                copyItem
+            )
+        }
+
+        navigationItem.rightBarButtonItems =
+            items
+    }
+    
     // MARK: - Deinit
 
     deinit {

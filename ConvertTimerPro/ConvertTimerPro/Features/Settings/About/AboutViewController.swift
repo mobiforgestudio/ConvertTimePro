@@ -30,19 +30,17 @@ final class AboutViewController:
 
 private extension AboutViewController {
 
-    func setupVersion() {
+    private func setupVersion() {
 
         let version =
-            Bundle.main.object(
-                forInfoDictionaryKey:
+            Bundle.main.infoDictionary?[
                 "CFBundleShortVersionString"
-            ) as? String ?? "1.0"
+            ] as? String ?? ""
 
         let build =
-            Bundle.main.object(
-                forInfoDictionaryKey:
+            Bundle.main.infoDictionary?[
                 "CFBundleVersion"
-            ) as? String ?? "1"
+            ] as? String ?? ""
 
         contentView.versionLabel.text =
             "Version \(version) (\(build))"

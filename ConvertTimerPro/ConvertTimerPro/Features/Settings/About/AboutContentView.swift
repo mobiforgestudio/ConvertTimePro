@@ -67,6 +67,9 @@ final class AboutContentView:
     private let utilitiesCard =
         AppCardView()
 
+    private let whatsNewCard =
+        AppCardView()
+    
     override func setupView() {
 
         backgroundColor =
@@ -83,9 +86,15 @@ final class AboutContentView:
         )
 
         setupHeader()
+
+        setupWhatsNewCard()
+
         setupStudioCard()
+
         setupAppStoreCard()
+
         setupWebsiteCard()
+
         setupUtilitiesCard()
     }
 
@@ -284,6 +293,17 @@ private extension AboutContentView {
                     AppColor.Accent.primary
             }
 
+        value.isUserInteractionEnabled = true
+
+        value.addGestureRecognizer(
+            UITapGestureRecognizer(
+                target: self,
+                action: #selector(
+                    openWebsite
+                )
+            )
+        )
+        
         websiteCard.addSubview(
             title
         )
@@ -316,6 +336,22 @@ private extension AboutContentView {
             websiteCard
         )
     }
+    
+    @objc
+    private func openWebsite() {
+
+        guard let url =
+            URL(
+                string: "https://mobiforge-site.pages.dev"
+            )
+        else {
+            return
+        }
+
+        UIApplication.shared.open(
+            url
+        )
+    }
 }
 
 // MARK: - Utilities
@@ -331,7 +367,7 @@ private extension AboutContentView {
 
         let value =
             makePrimaryLabel(
-                "\(UtilityItem.allCases.count) Tools Available"
+                "\(UtilityItem.allCases.count) Productivity Tools"
             )
 
         utilitiesCard.addSubview(
@@ -402,5 +438,73 @@ private extension AboutContentView {
             $0.textColor =
                 AppColor.Text.primary
         }
+    }
+}
+
+// MARK: - What's New
+
+private extension AboutContentView {
+
+    func setupWhatsNewCard() {
+
+        let title =
+            makeCaptionLabel(
+                "What's New"
+            )
+
+        let value =
+            UILabel().then {
+
+                $0.text =
+                """
+                • Redesigned Date Difference
+                • Improved Workdays
+                • Added Share & Copy
+                • Enhanced Timestamp
+                • UI Improvements
+                • Performance Improvements
+                • Bug Fixes
+                """
+
+                $0.numberOfLines = 0
+
+                $0.font =
+                    AppFont.bodyMedium()
+
+                $0.textColor =
+                    AppColor.Text.primary
+            }
+
+        whatsNewCard.addSubview(
+            title
+        )
+
+        whatsNewCard.addSubview(
+            value
+        )
+
+        title.snp.makeConstraints {
+
+            $0.top.leading.trailing
+                .equalToSuperview()
+                .inset(20)
+        }
+
+        value.snp.makeConstraints {
+
+            $0.top.equalTo(
+                title.snp.bottom
+            ).offset(8)
+
+            $0.leading.trailing
+                .equalTo(title)
+
+            $0.bottom.equalToSuperview()
+                .offset(-20)
+        }
+
+        stackView.addArrangedSubview(
+            whatsNewCard
+        )
     }
 }
