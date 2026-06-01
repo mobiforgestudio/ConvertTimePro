@@ -16,7 +16,7 @@ final class WorkdaysQuickChipsView:
         ((Int) -> Void)?
 
     private let chips =
-        [5, 10, 30, 90]
+        [5, 10, 30, 60]
 
     private var buttons:
         [UIButton] = []
@@ -129,5 +129,12 @@ final class WorkdaysQuickChipsView:
         onChipSelected?(
             sender.tag
         )
+    }
+    
+    func clearSelection() {
+
+        selectedValue = -1
+
+        updateSelection()
     }
 }

@@ -24,6 +24,18 @@ final class WorkdaysResultCardView:
         return formatter
     }()
     
+    private let titleLabel = UILabel().then {
+
+        $0.text = "TARGET DATE"
+
+        $0.font = AppFont.caption()
+
+        $0.textAlignment = .center
+
+        $0.textColor =
+            AppColor.Text.secondary
+    }
+    
     private let dateLabel =
         UILabel().then {
 
@@ -69,6 +81,7 @@ final class WorkdaysResultCardView:
         }
 
     override func setupView() {
+        addSubview(titleLabel)
         addSubview(dateLabel)
         addSubview(weekdayLabel)
         addSubview(summaryLabel)
@@ -76,12 +89,21 @@ final class WorkdaysResultCardView:
 
     override func setupConstraints() {
 
-        dateLabel.snp.makeConstraints {
+        titleLabel.snp.makeConstraints {
+
+            $0.top.equalToSuperview()
+                .offset(24)
 
             $0.centerX.equalToSuperview()
+        }
+        
+        dateLabel.snp.remakeConstraints {
 
-            $0.centerY.equalToSuperview()
-                .offset(-24)
+            $0.top.equalTo(
+                titleLabel.snp.bottom
+            ).offset(12)
+
+            $0.centerX.equalToSuperview()
 
             $0.leading.trailing
                 .equalToSuperview()
@@ -146,7 +168,7 @@ final class WorkdaysResultCardView:
                 from: result.targetDate
             )
 
-        summaryLabel.text =
+        summaryLabel.text = result.workdays == 1 ? "+1 Business Day" :
             "+\(result.workdays) Business Days"
     }
 }

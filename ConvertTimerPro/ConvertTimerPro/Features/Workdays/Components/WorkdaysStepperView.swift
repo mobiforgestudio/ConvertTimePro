@@ -16,7 +16,9 @@ final class WorkdaysStepperView: BaseView {
     private(set) var value = 30 {
         didSet {
             valueLabel.text =
-                "\(value) Business Days"
+                value == 1
+                ? "1 Business Day"
+                : "\(value) Business Days"
         }
     }
 

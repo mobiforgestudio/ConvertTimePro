@@ -77,9 +77,21 @@ private extension WorkdaysViewController {
             .onValueChanged = {
                 [weak self] value in
 
+                if [5,10,30,60].contains(value) {
+
+                    self?.contentView
+                        .quickChipsView
+                        .select(value)
+
+                } else {
+
+                    self?.contentView
+                        .quickChipsView
+                        .clearSelection()
+                }
+                
                 self?.workdays =
                     value
-
                 self?.reloadResult()
             }
 

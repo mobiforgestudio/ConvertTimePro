@@ -131,166 +131,197 @@ final class DateDifferenceResultCardView: AppCardView {
         title: String,
         value: String
     ) -> UIStackView {
-        
-        let iconView = UIImageView().then {
-            
-            $0.image = UIImage(
-                systemName: icon
-            )
-            
-            $0.tintColor =
-            AppColor.Accent.primary
-            
-            $0.contentMode =
-                .scaleAspectFit
-        }
-        
+
+        let iconView =
+            UIImageView().then {
+
+                $0.image =
+                    UIImage(
+                        systemName: icon
+                    )
+
+                $0.tintColor =
+                    AppColor.Accent.primary
+
+                $0.contentMode =
+                    .scaleAspectFit
+            }
+
         iconView.snp.makeConstraints {
-            $0.width.height.equalTo(18)
+
+            $0.width.height.equalTo(
+                18
+            )
         }
-        
-        let titleLabel = UILabel()
-        
-        titleLabel.text = title
-        
+
+        let titleLabel =
+            UILabel()
+
+        titleLabel.text =
+            title
+
         titleLabel.font =
-        AppFont.bodyMedium()
-        
+            AppFont.bodyMedium()
+
         titleLabel.textColor =
-        AppColor.Text.secondary
-        
-        let leftStack = UIStackView(
-            arrangedSubviews: [
-                iconView,
-                titleLabel
-            ]
-        )
-        
-        leftStack.axis = .horizontal
+            AppColor.Text.secondary
+
+        let leftStack =
+            UIStackView(
+                arrangedSubviews: [
+                    iconView,
+                    titleLabel
+                ]
+            )
+
+        leftStack.axis =
+            .horizontal
+
         leftStack.spacing = 8
-        
-        let valueLabel = UILabel()
-        
-        valueLabel.text = value
-        
+
+        let valueLabel =
+            UILabel()
+
+        valueLabel.text =
+            value
+
         valueLabel.font =
             .monospacedDigitSystemFont(
                 ofSize: 18,
                 weight: .medium
             )
-        
-        valueLabel.textAlignment = .right
-        
+
+        valueLabel.textAlignment =
+            .right
+
         valueLabel.textColor =
-        AppColor.Text.primary
-        
-        let spacer = UIView()
-        
-        let row = UIStackView(
-            arrangedSubviews: [
-                leftStack,
-                spacer,
-                valueLabel
-            ]
-        )
-        
-        row.axis = .horizontal
-        
+            AppColor.Text.primary
+
+        let spacer =
+            UIView()
+
+        let row =
+            UIStackView(
+                arrangedSubviews: [
+                    leftStack,
+                    spacer,
+                    valueLabel
+                ]
+            )
+
+        row.axis =
+            .horizontal
+
         return row
     }
     
     func configure(
         result: DateDifferenceResult
     ) {
-        
+
         if result.totalDays == 0 {
-            
+
             heroValueLabel.text = "0"
+
             heroTitleLabel.text = "Days"
-            
-            summaryLabel.text = "Same Date"
-            
-        }
-        
-        else if result.years > 0 {
-            
+
+            summaryLabel.text =
+                "Same Date"
+
+        } else if result.years > 0 {
+
             heroValueLabel.text =
-            "\(result.years)"
-            
+                "\(result.years)"
+
             heroTitleLabel.text =
-            result.years == 1
-            ? "Year"
-            : "Years"
-            
+                result.years == 1
+                ? "Year"
+                : "Years"
+
             summaryLabel.text =
             """
-            \(plural(result.months,
-                     singular: "Month",
-                     plural: "Months"))
+            \(PluralFormatter.format(
+                result.months,
+                singular: "Month",
+                plural: "Months"
+            ))
             •
-            \(plural(result.days,
-                     singular: "Day",
-                     plural: "Days"))
+            \(PluralFormatter.format(
+                result.days,
+                singular: "Day",
+                plural: "Days"
+            ))
             """
-            
+
         } else {
-            
+
             heroValueLabel.text =
-            "\(result.totalDays)"
-            
+                "\(result.totalDays)"
+
             heroTitleLabel.text =
-            result.totalDays == 1
-            ? "Day"
-            : "Days"
-            
+                result.totalDays == 1
+                ? "Day"
+                : "Days"
+
             summaryLabel.text =
             """
-            \(plural(result.months,
-                     singular: "Month",
-                     plural: "Months"))
+            \(PluralFormatter.format(
+                result.months,
+                singular: "Month",
+                plural: "Months"
+            ))
             •
-            \(plural(result.days,
-                     singular: "Day",
-                     plural: "Days"))
+            \(PluralFormatter.format(
+                result.days,
+                singular: "Day",
+                plural: "Days"
+            ))
             """
         }
-        
+
         statsStack.arrangedSubviews.forEach {
-            
-            statsStack.removeArrangedSubview($0)
-            
+
+            statsStack.removeArrangedSubview(
+                $0
+            )
+
             $0.removeFromSuperview()
         }
-        
+
         statsStack.addArrangedSubview(
             makeRow(
                 icon: "calendar",
                 title: "Days",
-                value: result.totalDays.formatted()
+                value:
+                    result.totalDays.formatted()
             )
         )
-        
+
         statsStack.addArrangedSubview(
             makeRow(
-                icon: "calendar.day.timeline.left",
+                icon:
+                    "calendar.badge.clock",
                 title: "Weeks",
-                value: result.totalWeeks.formatted()
+                value:
+                    result.totalWeeks.formatted()
             )
         )
-        
+
         statsStack.addArrangedSubview(
             makeRow(
                 icon: "clock",
                 title: "Hours",
-                value: result.totalHours.formatted()
+                value:
+                    result.totalHours.formatted()
             )
         )
-        
+
         statsStack.addArrangedSubview(
             makeRow(
                 icon: "timer",
                 title: "Minutes",
-                value: result.totalMinutes.formatted()
+                value:
+                    result.totalMinutes.formatted()
             )
         )
     }

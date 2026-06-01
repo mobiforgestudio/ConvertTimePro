@@ -23,7 +23,9 @@ final class WorkdaysEngine {
             Calendar.current
 
         var currentDate =
-            startDate
+            calendar.startOfDay(
+                for: startDate
+            )
 
         var remaining =
             max(
